@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hours and Minutes Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    :root {
+      --bg-color: #191919;
+      --text-color: #ffffff;
+      --input-bg: #2c2c2e;
+      --input-border: #3a3a3c;
+      --button-color: #ffffff;
+    }
+
+    body.light-mode {
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --input-bg: #f0f0f0;
+      --input-border: #cccccc;
+      --button-color: #000000;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .container {
+      background-color: transparent;
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 1200px;
+      min-width: 250px;
+      min-height: 200px;
+      position: relative;
+    }
+
+    .theme-switch {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .theme-switch img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      margin: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .theme-switch img:hover {
+      transform: scale(1.1);
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .input-group input {
+      flex: 1;
+      max-width: calc(50% - 10px);
+      margin: 0 5px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .result {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="theme-switch">
+      <img src="https://icons-for-free.com/iff/png/512/sun-131979013495145260.png" id="light-icon" alt="Light Mode" title="Switch to Light Mode" />
+      <img src="https://static-00.iconduck.com/assets.00/moon-icon-512x512-fm9crgpt.png" id="dark-icon" alt="Dark Mode" title="Switch to Dark Mode" style="display: none;" />
+    </div>
+    <div class="title">Hours and Minutes Converter</div>
+    <div class="input-group">
+      <input type="number" id="hours" placeholder="Hours" />
+      <span>:</span>
+      <input type="number" id="minutes" placeholder="Minutes" />
+    </div>
+    <div class="result-container">
+      <div class="result" id="decimal-hours">0.00</div>
+    </div>
+  </div>
+
+  <script>
+  const hoursInput = document.getElementById("hours");
+  const minutesInput = document.getElementById("minutes");
+  const decimalHours = document.getElementById("decimal-hours");
+  const lightIcon = document.getElementById("light-icon");
+  const darkIcon = document.getElementById("dark-icon");
+
+  function updateDecimalHours() {
+    const hours = parseInt(hoursInput.value) || 0;
+    const minutes = parseInt(minutesInput.value) || 0;
+    const decimal = (hours + minutes / 60).toFixed(2);
+    decimalHours.textContent = decimal;
+  }
+
+  function toggleTheme(isLight) {
+    if (isLight) {
+      document.body.classList.add("light-mode");
+      localStorage.setItem("theme", "light");
+      lightIcon.style.display = "none";
+      darkIcon.style.display = "inline";
+    } else {
+      document.body.classList.remove("light-mode");
+      localStorage.setItem("theme", "dark");
+      lightIcon.style.display = "inline";
+      darkIcon.style.display = "none";
+    }
+  }
+
+  // Load saved theme on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      toggleTheme(true);
+    } else {
+      toggleTheme(false);
+    }
+  });
+
+  hoursInput.addEventListener("input", updateDecimalHours);
+  minutesInput.addEventListener("input", updateDecimalHours);
+
+  lightIcon.addEventListener("click", () => toggleTheme(true));
+  darkIcon.addEventListener("click", () => toggleTheme(false));
+</script>
+</body>
+</html>
